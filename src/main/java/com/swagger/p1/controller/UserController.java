@@ -2,11 +2,18 @@ package com.swagger.p1.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.swagger.p1.DTO.AuthResponseDTO;
 import com.swagger.p1.DTO.UsersDTO;
 import com.swagger.p1.DTO.authRequestDTO;
 import com.swagger.p1.Service.UsersService;
+import com.swagger.p1.Entity.*;
+import com.swagger.p1.repository.*;
+import com.swagger.p1.security.JWTConfig;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController("/UsersInfo")
 public class UserController {
 
+    @Autowired
+    private JWTConfig jwtconfig;
+
+    @Autowired
+    private UsersRepo urepo;
     @Autowired
     private UsersService userService;
 
@@ -26,9 +38,17 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody authRequestDTO authReq) {
-       
-        return userService.loginUser(authReq);
+        Users toVerify=null;
+       Optional<Users> getUser=urepo.findByUserName(authReq.getUsername());
+        if(getUser.isPresent() ){
+         toVerify=getUser.get();
+        }
+        if(toVerify.getUserName().equals(authReq.getUsername()) && toVerify.getPassword().equals(authReq.getPassword())){
+
+            String token =jwtconfig.generateToken(authReq.getUsername());
+            return ResponseEntity.ok(new AuthResponseDTO(token));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
+    
     }
-    
-    
 }

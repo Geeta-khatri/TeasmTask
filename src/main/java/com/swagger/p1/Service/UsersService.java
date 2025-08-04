@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.Authentication;
 import com.swagger.p1.DTO.UsersDTO;
-import com.swagger.p1.DTO.authRequestDTO;
 import com.swagger.p1.Entity.Users;
 import com.swagger.p1.repository.*;
 @Service
@@ -38,10 +36,10 @@ public class UsersService {
             }
     }
     }
-    public ResponseEntity<?> loginUser(authRequestDTO authreq){
-        Authentication authentication =auth
+    // public ResponseEntity<?> loginUser(authRequestDTO authreq){
+        
 
-    }
+    // }
 
    
 }

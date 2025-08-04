@@ -1,6 +1,6 @@
 package com.swagger.p1.Service;
 
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,7 +64,7 @@ public class TaskService {
 
     public ResponseEntity<?> getAllTask(Long UserId){
         try {
-            List<TaskDtoResponse> response=new ArrayList();
+            List<TaskDtoResponse> response=new ArrayList<TaskDtoResponse>();
             List<Task> TaskExist=trepo.findByAssignedTo(UserId);
             for(Task i:TaskExist){
                 TaskDtoResponse tdtoresp=new TaskDtoResponse();

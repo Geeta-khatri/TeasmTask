@@ -11,6 +11,6 @@ import org.springframework.data.repository.query.Param;
 public interface TaskRepo extends JpaRepository<Task,Long> {
 
     //Optional<Task> findByAssignedTo(Long  id);
-    // @Query("select t from Task t where t.assignedTo.id=:userId")
-    // List<Task> findByAssignedTo(@Param("userId")Long UserId);
+    @Query("select t from Task t where t.assignedTo.id=:userId")
+    List<Task> findByAssignedTo(@Param("userId")Long UserId);
 }
