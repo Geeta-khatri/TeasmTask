@@ -7,9 +7,11 @@ import com.swagger.p1.DTO.*;
 import com.swagger.p1.Service.ProjectService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RestController("/projects")
+@RestController
+@RequestMapping("/projects")
 public class ProjectController {
 
     @Autowired

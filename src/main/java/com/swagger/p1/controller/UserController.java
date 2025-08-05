@@ -17,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RestController("/UsersInfo")
+@RestController
+@RequestMapping("/UsersInfo")
 public class UserController {
 
     @Autowired
@@ -38,17 +40,24 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody authRequestDTO authReq) {
+        System.out.println("entered the login endpoint");
         Users toVerify=null;
        Optional<Users> getUser=urepo.findByUserName(authReq.getUsername());
+       System.out.println("looking for user "+getUser.get().getUserName());
         if(getUser.isPresent() ){
-         toVerify=getUser.get();
-        }
-        if(toVerify.getUserName().equals(authReq.getUsername()) && toVerify.getPassword().equals(authReq.getPassword())){
 
+         toVerify=getUser.get();
+        
+         System.out.println(toVerify.getUserName());
+        if(toVerify.getUserName().equals(authReq.getUsername()) && toVerify.getPassword().equals(authReq.getPassword())){
+        System.out.println("user found"+toVerify);
             String token =jwtconfig.generateToken(authReq.getUsername());
             return ResponseEntity.ok(new AuthResponseDTO(token));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
-    
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
+        }
     }
 }

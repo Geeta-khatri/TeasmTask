@@ -8,12 +8,14 @@ import com.swagger.p1.DTO.*;
 import com.swagger.p1.Service.TaskService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 
-@RestController("/Task")
+@RestController
+@RequestMapping("/Task")
 public class TaskController {
 
     @Autowired
