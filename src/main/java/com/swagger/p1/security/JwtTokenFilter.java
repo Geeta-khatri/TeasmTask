@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,26 +17,24 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter{
 
-//     public void setJwtConfig(JWTConfig jwtconfig) {
-//     this.jwtconfig = jwtconfig;
-// }
-    
     public JwtTokenFilter() {
     }
     
     @Autowired
     private JWTConfig   jwtconfig;
 
-    // private final JWTConfig jwtconfig;
-
-    // public JwtTokenFilter(JWTConfig jwtconfig) {
-    //     this.jwtconfig = jwtconfig;
-    // }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        System.out.println("Checking skip for path: " + request.getRequestURI());
+        return "/UsersInfo/login".equals(path) || "/UsersInfo/register".equals(path); // skip filter for this path
+    }
     @Override
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse resp,FilterChain chain) 
     throws IOException,ServletException{
 
-        
+        //String path=req.getRequestURI();
+
         //HttpServletRequest request=(HttpServletRequest)req;
         String authHeader=req.getHeader("Authorization");
         if(authHeader!=null && authHeader.startsWith("Bearer ")){
@@ -55,9 +51,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 
         }
         chain.doFilter(req, resp);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Completed JwtTokenFilter.doFilterInternal");
-        }
+        
     }
 
     
