@@ -1,40 +1,42 @@
 package com.swagger.p1.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
     JwtTokenFilter jwtTokenFilter;
-//  @Bean
-//     public JwtTokenFilter jwtTokenFilter(JWTConfig jwtConfig) {
-//         JwtTokenFilter filter = new JwtTokenFilter();
-//         filter.setJwtConfig(jwtConfig);  // You’ll need to add a setter in JwtTokenFilter
-//         return filter;
-    //}
-    //  @Bean
-    // public JwtTokenFilter jwtTokenFilter(JWTConfig jwtConfig) {
-    //     return new JwtTokenFilter(jwtConfig);
-    // }
     @Bean
-    public SecurityFilterChain filterchain(HttpSecurity http,JwtTokenFilter jwtTokenFilter) throws Exception{
+    public SecurityFilterChain filterchain(HttpSecurity http) throws Exception{
 
         http.csrf(csrf->csrf.disable())
+        .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth->auth
-        .requestMatchers("/UsersInfo/login")
-        .permitAll()
+        .requestMatchers(HttpMethod.POST,"/UsersInfo/login").permitAll()
+         .requestMatchers(HttpMethod.POST, "/UsersInfo/register").permitAll()
         .anyRequest()
-        .authenticated()
+       .authenticated()
         )
-        .addFilterBefore(jwtTokenFilter,  UsernamePasswordAuthenticationFilter.class);
+        .formLogin(AbstractHttpConfigurer::disable) // Disable form login
+            .httpBasic(AbstractHttpConfigurer::disable)
+        .addFilterBefore(jwtTokenFilter,  UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return http.build();
     }
 
+    
 }
