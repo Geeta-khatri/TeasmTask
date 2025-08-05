@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swagger.p1.DTO.AuthResponseDTO;
 import com.swagger.p1.DTO.UsersDTO;
-import com.swagger.p1.DTO.authRequestDTO;
+import com.swagger.p1.DTO.AuthRequestDTO;
 import com.swagger.p1.Service.UsersService;
 import com.swagger.p1.Entity.*;
 import com.swagger.p1.repository.*;
@@ -15,6 +15,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> userLogin(@RequestBody authRequestDTO authReq) {
+    public ResponseEntity<?> userLogin(@RequestBody AuthRequestDTO authReq) {
         System.out.println("entered the login endpoint");
         Users toVerify=null;
        Optional<Users> getUser=urepo.findByUserName(authReq.getUsername());
@@ -60,4 +61,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
         }
     }
+
+   
 }
