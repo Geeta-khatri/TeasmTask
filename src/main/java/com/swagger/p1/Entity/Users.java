@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
@@ -13,6 +14,7 @@ import jakarta.persistence.Entity;
 @Entity//(tableName="User")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Users {
 
     @Id
@@ -27,4 +29,5 @@ public class Users {
 
     @OneToMany(mappedBy = "assignedTo",cascade =CascadeType.ALL)
     private List<Task> AssignedTask;
+
 }

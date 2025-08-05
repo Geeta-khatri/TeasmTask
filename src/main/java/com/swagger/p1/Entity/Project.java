@@ -11,11 +11,15 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.List;
 import jakarta.persistence.Entity;
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity//(tableName="Projects")
 public class Project {
@@ -29,6 +33,12 @@ public class Project {
 
     private String description;
 
+     @Override
+    public String toString() {
+        return "Project{id=" + id + ", name='" + name + "'}";
+    }
+
+    @ToString.Exclude
    @ManyToOne
    @JoinColumn(name="Asign_to_user")
     private Users ProjectOwner;

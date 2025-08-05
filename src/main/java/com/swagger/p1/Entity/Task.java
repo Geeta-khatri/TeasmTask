@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import java.util.Date;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 @Data
 @NoArgsConstructor
 @Entity
@@ -22,6 +23,12 @@ public class Task {
     private String status;
     private Date dueDate;
 
+    @Override
+    public String toString() {
+        return "Task{id=" + id + ", title='" + title + "'}";
+    }
+
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="Assign_to_project")
     private Project projectTask;
