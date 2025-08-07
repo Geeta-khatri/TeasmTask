@@ -57,4 +57,21 @@ public class ProjectService {
         }
 
     }
+
+    public ResponseEntity<?> deleteProject(Long id){
+        try {
+            Optional<Project> pExist=prepo.findById(id);
+            if(pExist.isPresent()){
+                prepo.deleteById(id);
+                return ResponseEntity.status(HttpStatus.OK).body("Project deleted successully!");
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("NO project exist with mention project id");
+            }
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occured in deleting project");
+        }
+    }
 }
+
