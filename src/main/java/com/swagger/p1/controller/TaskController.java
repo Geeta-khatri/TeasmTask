@@ -9,6 +9,7 @@ import com.swagger.p1.Service.TaskService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,13 +32,18 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getMethodName(@RequestParam Long USerid) {
+    public ResponseEntity<?> TaskAllGet(@RequestParam Long USerid) {
         return tservice.getAllTask(USerid);
     }
 
     @PutMapping("/Update/{id}")
-    public ResponseEntity<?> putMethodName(@PathVariable Long id, @RequestBody TaskDTO t) {
+    public ResponseEntity<?> TaskUpdate(@PathVariable Long id, @RequestBody TaskDTO t) {
          return tservice.updateTask(id,t);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> TaskDelete(@PathVariable Long id) {
+         return tservice.deleteTask(id);
     }
     
 }

@@ -130,4 +130,19 @@ public class TaskService {
         }
         
     }
+    public ResponseEntity<?> deleteTask(Long id){
+try {
+    Optional<Task> taskExist=trepo.findById(id);
+    if(taskExist.isPresent()){
+    trepo.deleteById(id);
+    return ResponseEntity.status(HttpStatus.OK).body("Task deleted successfully!");
+    }
+    else{
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Task does not exist");
+    }
+} catch (Exception e) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured in deleting task");
+}
+        
+    }
 }
