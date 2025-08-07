@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -30,6 +33,11 @@ public class TaskController {
     @GetMapping("/user")
     public ResponseEntity<?> getMethodName(@RequestParam Long USerid) {
         return tservice.getAllTask(USerid);
+    }
+
+    @PutMapping("/Update/{id}")
+    public ResponseEntity<?> putMethodName(@PathVariable Long id, @RequestBody TaskDTO t) {
+         return tservice.updateTask(id,t);
     }
     
 }
