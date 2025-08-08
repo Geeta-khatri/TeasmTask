@@ -28,13 +28,19 @@ public class ProjectService {
        // return new ResponseEntity<>("Project Already exists",HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Project already exists");
         }
-        Users AssigningTo=null;
+        Users AssigningTo=new Users();
+        System.out.println("userId is"+pDTO.getUserId());
         if(pDTO.getUserId()!=null){
         Optional<Users> ProjectOwner=urepo.findById(pDTO.getUserId());
+        System.out.println("Project owner before if is"+ProjectOwner);
         if(ProjectOwner.isEmpty()){
-        return new ResponseEntity<>("User does not exists to assign the projects",HttpStatus.BAD_REQUEST);
+        //return new ResponseEntity<>("User does not exists to assign the projects",HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exists to assign the projects");
         }
+        else{
         AssigningTo=ProjectOwner.get();
+        System.out.println("Assigned to is "+AssigningTo);
+        }
     }
         try {
             Project createProject=new Project();
@@ -42,6 +48,7 @@ public class ProjectService {
             createProject.setDescription(pDTO.getDescription());
             if(AssigningTo!=null){
             createProject.setProjectOwner(AssigningTo);
+            System.out.println("user for creating project"+createProject.getProjectOwner());
             }
             Project savedProject=prepo.save(createProject);
             response.setId(savedProject.getId());
@@ -66,11 +73,38 @@ public class ProjectService {
                 return ResponseEntity.status(HttpStatus.OK).body("Project deleted successully!");
             }
             else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("NO project exist with mention project id");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("NO project exist with mentioned project id");
             }
             
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occured in deleting project");
+        }
+    }
+
+    public ResponseEntity<?> updateProject(Long id, ProjectDTO pinp){
+
+        try {
+            Optional<Project>  pExist=prepo.findById(id);
+            ProjectDTOResponse pResponse=new ProjectDTOResponse();
+            if(pExist.isPresent()){
+                Project to_update=new Project();
+                to_update.setDescription(pinp.getDescription());
+                to_update.setName(pinp.getName());
+                Optional<Users> assign_to=urepo.findById(pinp.getUserId());
+                to_update.setProjectOwner(assign_to.get());
+                prepo.save(to_update);
+                pResponse.setDescription(to_update.getDescription());
+                pResponse.setName(to_update.getName());
+                pResponse.setUserId(assign_to.get().getId());
+                pResponse.setId(id);
+                return ResponseEntity.status(HttpStatus.OK).body("Project updated successfullyy!");
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No project exists with mentioned project id");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occure in updating project");
         }
     }
 }
