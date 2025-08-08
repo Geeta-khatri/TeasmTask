@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -34,5 +37,11 @@ public class ProjectController {
      public ResponseEntity<?> projectUpdate(@PathVariable Long id,@RequestBody ProjectDTO pdto){
         return pservice.updateProject(id,pdto);
     }
+
+    @GetMapping("/getAllProject")
+    public ResponseEntity<?> getAllProject() {
+        return pservice.AllProject();
+    }
+    
     
 }

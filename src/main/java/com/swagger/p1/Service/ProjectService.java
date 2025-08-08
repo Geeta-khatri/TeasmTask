@@ -10,8 +10,10 @@ import com.swagger.p1.DTO.ProjectDTOResponse;
 import com.swagger.p1.repository.ProjectRepo;
 import com.swagger.p1.repository.UsersRepo;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.List;
 @Service
 public class ProjectService {
 
@@ -106,6 +108,36 @@ public class ProjectService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occure in updating project");
         }
+    }
+
+    public ResponseEntity<?> AllProject(){
+        try {
+            List<Project> Allproject=prepo.findAll();
+            System.out.println("project present "+Allproject);
+           List< ProjectDTOResponse> presp=new ArrayList<ProjectDTOResponse>();
+
+            if(Allproject.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no project Exist!!");
+            }
+            else{
+                for(Project i:Allproject){
+                    ProjectDTOResponse p= new ProjectDTOResponse();
+                    p.setDescription(i.getDescription());
+                    p.setId(i.getId());
+                    p.setName(i.getName());
+                    if(i.getProjectOwner()!=null){
+                    p.setUserId(i.getProjectOwner().getId());
+                    }
+                   presp.add(p);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(presp);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured while getting all project");
+        }
+        
+        
+
     }
 }
 
