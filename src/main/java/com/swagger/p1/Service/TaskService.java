@@ -2,6 +2,7 @@ package com.swagger.p1.Service;
 
 
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -65,7 +66,7 @@ public class TaskService {
         }
     }
 
-    public ResponseEntity<?> getAllTask(Long UserId){
+    public ResponseEntity<?> UsergetAllTask(Long UserId){
         try {
             List<TaskDtoResponse> response=new ArrayList<TaskDtoResponse>();
             List<Task> TaskExist=trepo.findByAssignedTo(UserId);
@@ -144,5 +145,31 @@ try {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured in deleting task");
 }
         
+    }
+
+    public ResponseEntity<?> getAllTask(){
+        try {
+            List<Task> t=trepo.findAll();
+            if(t.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No record exist!!");
+            }
+            
+            List<TaskDtoResponse> resp=new ArrayList<TaskDtoResponse>();
+            for(Task task: t){
+            TaskDtoResponse response=new TaskDtoResponse();
+                response.setDescription(task.getDescription());
+                response.setDueDate(task.getDueDate());
+                response.setId(task.getId());
+                response.setStatus(task.getStatus());
+                response.setTitle(task.getTitle());
+                response.setProjectId(task.getProjectTask().getId());
+                response.setUserId(task.getAssignedTo().getId());
+            resp.add(response);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occured in fetching all Task");
+        }
     }
 }

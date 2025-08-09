@@ -32,8 +32,8 @@ public class TaskController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> TaskAllGet(@RequestParam Long USerid) {
-        return tservice.getAllTask(USerid);
+    public ResponseEntity<?> TaskAllGetUser(@RequestParam Long USerid) {
+        return tservice.UsergetAllTask(USerid);
     }
 
     @PutMapping("/Update/{id}")
@@ -45,5 +45,11 @@ public class TaskController {
     public ResponseEntity<?> TaskDelete(@PathVariable Long id) {
          return tservice.deleteTask(id);
     }
+
+    @GetMapping("/AllTask")
+    public ResponseEntity<?> getAllTask() {
+        return tservice.getAllTask();
+    }
+    
     
 }
