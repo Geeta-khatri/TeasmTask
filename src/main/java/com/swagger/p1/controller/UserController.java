@@ -41,12 +41,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody AuthRequestDTO authReq) {
-        System.out.println("entered the login endpoint");
-        Users toVerify=null;
+        System.out.println("entered the login endpoint"+authReq.getUsername()+" "+authReq.getPassword());
+        Users toVerify=new Users();
        Optional<Users> getUser=urepo.findByUserName(authReq.getUsername());
-       System.out.println("looking for user "+getUser.get().getUserName());
+       
         if(getUser.isPresent() ){
-
+        System.out.println("looking for user "+getUser.get().getUserName());
          toVerify=getUser.get();
         
          System.out.println(toVerify.getUserName());
