@@ -90,10 +90,15 @@ public class ProjectService {
             ProjectDTOResponse pResponse=new ProjectDTOResponse();
             if(pExist.isPresent()){
                 Project to_update=new Project();
+                to_update=pExist.get();
                 to_update.setDescription(pinp.getDescription());
                 to_update.setName(pinp.getName());
                 Optional<Users> assign_to=urepo.findById(pinp.getUserId());
+                if(assign_to.isPresent()){
+                    System.out.println("owner user is "+assign_to.get().getId());
                 to_update.setProjectOwner(assign_to.get());
+                System.out.println(to_update.getProjectOwner());
+                }
                 prepo.save(to_update);
                 pResponse.setDescription(to_update.getDescription());
                 pResponse.setName(to_update.getName());
