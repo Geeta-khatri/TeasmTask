@@ -1,5 +1,6 @@
 package com.swagger.p1.Service;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,8 +142,31 @@ public class ProjectService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured while getting all project");
         }
         
-        
+    }
 
+    public ResponseEntity<?> projectById(Long id){
+        try {
+           Project pExist= prepo.findById(id).orElse(null);
+           
+           if(pExist!=null){
+            ProjectDTOResponse ProjectDtls=new ProjectDTOResponse();
+            ProjectDtls.setDescription(pExist.getDescription());
+            ProjectDtls.setName(pExist.getName());
+            
+            if(pExist.getProjectOwner()!=null ){//&& pExist.getProjectOwner().getId()!=null ){
+                System.out.println("id is "+pExist.getProjectOwner().getId());
+            ProjectDtls.setUserId(pExist.getProjectOwner().getId());
+            }
+            ProjectDtls.setId(pExist.getId());
+
+            return ResponseEntity.status(HttpStatus.OK).body(ProjectDtls);
+           }
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Project does not exist!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An Exception occured while fetching the project");
+        }
     }
 }
 

@@ -43,5 +43,10 @@ public class ProjectController {
         return pservice.AllProject();
     }
     
+    @GetMapping("/getProject/{id}")
+    public ResponseEntity<?> getMethodName(@PathVariable Long id) {
+        return pservice.projectById(id);
+    }
+    
     
 }
