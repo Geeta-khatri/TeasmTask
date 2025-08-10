@@ -172,4 +172,22 @@ try {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occured in fetching all Task");
         }
     }
+
+    public ResponseEntity<?> StatusPatch(Long id, TaskDTO tdto){
+        try {
+            Task tExist=trepo.findById(id).orElse(null);
+            if(tExist==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Task Exist with mention id!");
+            }
+            if(tdto.getStatus()!=null){
+                tExist.setStatus(tdto.getStatus());
+            }
+            trepo.save(tExist);
+            System.out.println("tExist is "+tExist);
+            return ResponseEntity.status(HttpStatus.OK).body("Status Updated Successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An exception occured in updating Statud");
+        }
+    }
 }
