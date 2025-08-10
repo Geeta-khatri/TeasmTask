@@ -6,8 +6,9 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
+import com.swagger.p1.Service.CustonUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,9 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     public JwtTokenFilter() {
     }
     
+    @Autowired
+    private CustonUserDetailService custonUserDetailService;
+
     @Autowired
     private JWTConfig   jwtconfig;
 
@@ -44,8 +48,9 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 ((HttpServletResponse)resp).sendError(HttpServletResponse.SC_UNAUTHORIZED,"Invalid Token");
                 return;
             }
+            UserDetails uDetsils=custonUserDetailService.loadUserByUsername(username);
             if(SecurityContextHolder.getContext().getAuthentication()==null){
-                UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(username,null,Collections.emptyList());
+                UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(uDetsils,null,Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
 
