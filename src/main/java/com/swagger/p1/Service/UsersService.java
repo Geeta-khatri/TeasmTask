@@ -3,12 +3,16 @@ package com.swagger.p1.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.swagger.p1.DTO.UsersDTO;
 import com.swagger.p1.Entity.Users;
 import com.swagger.p1.repository.*;
 @Service
 public class UsersService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private  UsersRepo urepo;
@@ -25,7 +29,7 @@ public class UsersService {
             Users registU=new Users();
             registU.setUserName(uu.getUsername());
             registU.setEmail(uu.getEmail());
-            registU.setPassword(uu.getPassword());
+            registU.setPassword(passwordEncoder.encode(uu.getPassword()));
             try {
                 urepo.save(registU);
                 return new ResponseEntity<>("User Saved Successfully",HttpStatus.OK);
