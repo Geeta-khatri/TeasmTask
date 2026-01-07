@@ -13,15 +13,19 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 import jakarta.persistence.Entity;
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity//(tableName="Projects")
+@Getter
+@Setter
 public class Project {
 
     @Id

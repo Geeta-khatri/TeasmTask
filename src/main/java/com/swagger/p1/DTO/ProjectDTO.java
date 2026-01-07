@@ -1,11 +1,14 @@
 package com.swagger.p1.DTO;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-
-@Data
+@Getter
+@Setter
+//@Data
 @NoArgsConstructor
 public class ProjectDTO {
 
