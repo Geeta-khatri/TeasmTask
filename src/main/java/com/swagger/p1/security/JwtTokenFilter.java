@@ -31,7 +31,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
         System.out.println("Checking skip for path: " + request.getRequestURI());
-        return "/UsersInfo/login".equals(path) || "/UsersInfo/register".equals(path); // skip filter for this path
+        return "/UsersInfo/login".equals(path) || "/UsersInfo/register".equals(path)  ; // skip filter for this path
     }
     @Override
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse resp,FilterChain chain) 
