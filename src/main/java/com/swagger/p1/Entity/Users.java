@@ -29,10 +29,12 @@ public class Users {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy="ProjectOwner",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="ProjectOwner")//,cascade=CascadeType.ALL)
     private List<Project> UserProject;
-
-    @OneToMany(mappedBy = "assignedTo",cascade =CascadeType.ALL)
+// commenting cascade as If you delete a User:
+//Hibernate will also delete all Projects owned by that user
+//Hibernate will also delete all Tasks assigned to that user
+    @OneToMany(mappedBy = "assignedTo")//,cascade =CascadeType.ALL)
     private List<Task> AssignedTask;
 
 }
