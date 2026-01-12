@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.Date;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,7 +23,8 @@ public class Task {
     private String title;
     private String description;
     private String status;
-    private Date dueDate;
+    //private Date dueDate;
+    private LocalDate dueDate;
 
     @Override
     public String toString() {

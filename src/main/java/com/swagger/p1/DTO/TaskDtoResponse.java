@@ -1,5 +1,6 @@
 package com.swagger.p1.DTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Data;
@@ -11,7 +12,7 @@ private String title;
     private Long id;
     private String description;
     private String status;
-    private Date dueDate;
+    private LocalDate dueDate;
     private Long projectId;
     private Long userId;
 }
