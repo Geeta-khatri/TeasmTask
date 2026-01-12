@@ -1,1 +1,32 @@
 payoad for testing features of teamTask
+
+registring user
+{
+"username": "user1" ,
+"email": "user1@gmail.com",
+"password": "user1Pass"
+}
+
+login   (token-eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODIyOTU4OCwiZXhwIjoxNzY4MjMwNDg4fQ.CF6KefWeMDaJH1WKT1SXw-FCOpFb_1ojJyxHGsbNQEk}
+
+{
+"username": "user1",
+"password" : "user1Pass"
+
+}
+creating project
+{
+	"name" : "project 1" ,
+    "description" : "project 1 description",
+   "userId": 1
+}
+
+creating task
+{
+	"title": TASK 1,
+    "description": "task 1 of project",
+    "status": "started",
+    "dueDate": "2028-01-01",
+    "projectId": 1,
+    "userId": 1
+}
