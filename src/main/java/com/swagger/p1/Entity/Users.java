@@ -28,7 +28,8 @@ public class Users {
     private String userName;
     private String email;
     private String password;
-
+    private String assigned_role ;
+    
     @OneToMany(mappedBy="ProjectOwner")//,cascade=CascadeType.ALL)
     private List<Project> UserProject;
 // commenting cascade as If you delete a User:
