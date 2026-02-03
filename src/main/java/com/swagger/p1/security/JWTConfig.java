@@ -57,4 +57,21 @@ private Key getSigningKey() {
             return null;
         }
     }
+    
+    public String extractRole(String token) {
+    	try {
+    		return Jwts.parserBuilder()
+    	            .setSigningKey(getSigningKey())
+    	            .build()
+    	            .parseClaimsJws(token)
+    	            .getBody()
+    	            .get("role",String.class);
+    	            
+
+    		
+    	}
+    	 catch (JwtException e) {
+             return null;
+         }
+    }
 }
