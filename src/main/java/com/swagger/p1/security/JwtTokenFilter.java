@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -44,14 +45,16 @@ public class JwtTokenFilter extends OncePerRequestFilter{
         if(authHeader!=null && authHeader.startsWith("Bearer ")){
             String jwt=authHeader.substring(7);
             String username=jwtconfig.validateToken(jwt);
+            String role=jwtconfig.extractRole(jwt);
             if(username==null){
                 ((HttpServletResponse)resp).sendError(HttpServletResponse.SC_UNAUTHORIZED,"Invalid Token");
                 return;
             }
             UserDetails uDetsils=custonUserDetailService.loadUserByUsername(username);
             if(SecurityContextHolder.getContext().getAuthentication()==null){
-                UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(uDetsils,null,Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                //UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(uDetsils,null,Collections.emptyList());
+            	UsernamePasswordAuthenticationToken authToken =new UsernamePasswordAuthenticationToken(uDetsils,null,Collections.singletonList(new SimpleGrantedAuthority(role)));
+            	SecurityContextHolder.getContext().setAuthentication(authToken);
             }
 
         }
