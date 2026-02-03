@@ -55,7 +55,7 @@ public class UserController {
          System.out.println(toVerify.getUserName());
         if(toVerify.getUserName().equals(authReq.getUsername()) && passwordEncoder.matches(authReq.getPassword(), toVerify.getPassword())){//toVerify.getPassword().equals(authReq.getPassword())){
         System.out.println("user found"+toVerify);
-            String token =jwtconfig.generateToken(authReq.getUsername());
+            String token =jwtconfig.generateToken(toVerify);
             return ResponseEntity.ok(new AuthResponseDTO(token));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
