@@ -2,6 +2,8 @@ package com.swagger.p1.security;
 
 import org.springframework.stereotype.Service;
 
+import com.swagger.p1.Entity.Users;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,11 +34,12 @@ private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
     //private final Key k=Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    public String generateToken(String username){
+    public String generateToken(Users  verified_user){
         return Jwts.builder()
-        .setSubject(username)
+        .setSubject(verified_user.getUserName())
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis()+expiration))
+        .claim("role", verified_user.getAssigned_role()) 
         .signWith(getSigningKey(),SignatureAlgorithm.HS256)
         .compact();
     }
