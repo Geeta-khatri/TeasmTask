@@ -13,12 +13,15 @@ import com.swagger.p1.Entity.Users;
 import com.swagger.p1.Service.UsersService;
 import com.swagger.p1.repository.UsersRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController("/admin")
+@RequiredArgsConstructor
 public class AuthController {
-	 @Autowired
-	    private UsersService userService;
-	    @Autowired
-	    private UsersRepo urepo;
+	 
+	    private final UsersService userService;
+	    
+	    private  final UsersRepo urepo;
 	 
 	@PostMapping("/roleAssign")
 	public String AssignUserRole(Long id, String role) {
