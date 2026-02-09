@@ -30,3 +30,7 @@ creating task
     "projectId": 1,
     "userId": 1
 }
+
+for assigning role to user
+http://localhost:8888/admin/roleAssign/2?role=USER  
+2 as id by PathVariable and role=USER by Requestparam
