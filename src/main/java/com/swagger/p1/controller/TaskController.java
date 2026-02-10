@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swagger.p1.DTO.*;
 import com.swagger.p1.Service.TaskService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,34 +23,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/Task")
 public class TaskController {
 
-    @Autowired
-    private TaskService tservice;
+    
+    private final TaskService tservice;
 
-    @PostMapping("/taskCreate")
+    @PostMapping("/admin/taskCreate")
     public ResponseEntity<?> TaskCreate(@RequestBody TaskDTO tdto) {
         return tservice.createTask(tdto);
        
     }
-
+// this method is secure here i will get the authenticated user and will return task assigned to that user only
     @GetMapping("/user")
     public ResponseEntity<?> TaskAllGetUser(@RequestParam Long USerid) {
         return tservice.UsergetAllTask(USerid);
     }
 
-    @PutMapping("/Update/{id}")
+    @PutMapping("/admin/Update/{id}")
     public ResponseEntity<?> TaskUpdate(@PathVariable Long id, @RequestBody TaskDTO t) {
          return tservice.updateTask(id,t);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<?> TaskDelete(@PathVariable Long id) {
          return tservice.deleteTask(id);
     }
 
-    @GetMapping("/AllTask")
+    @GetMapping("/admin/AllTask")
     public ResponseEntity<?> getAllTask() {
         return tservice.getAllTask();
     }
