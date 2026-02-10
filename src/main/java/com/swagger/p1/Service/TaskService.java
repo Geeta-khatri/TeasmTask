@@ -84,7 +84,7 @@ public class TaskService {
                 
             }
             if(TaskExist.isEmpty()){
-                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("NO such user exist");
+                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Task assigned to user "+UserId);
             }
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
