@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 
 import com.swagger.p1.Entity.Users;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -73,5 +75,33 @@ private Key getSigningKey() {
     	 catch (JwtException e) {
              return null;
          }
+    }
+    
+    public Claims getClaimsDtls(HttpServletRequest req) {
+    	
+    		String authHeader =req.getHeader("Authorization");
+        	if(authHeader!=null && authHeader.startsWith("Bearer ")){
+        	String token =authHeader.substring(7);
+        	String uname=validateToken(token);
+        	if(uname!=null) {
+        		try {
+    		return Jwts.parserBuilder()
+    	            .setSigningKey(getSigningKey())
+    	            .build()
+    	            .parseClaimsJws(token)
+    	            .getBody();
+    	            
+        	}
+        		catch (JwtException e) {
+                    return null;
+                }
+    	}
+        	else {
+        		System.out.println("Token validation failed: invalid token");
+                return null;
+        	}
+        	}
+        	System.out.println("Authorization header missing or does not start with Bearer");
+            return null;
     }
 }
