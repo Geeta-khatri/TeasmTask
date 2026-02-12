@@ -1,12 +1,19 @@
 package com.swagger.p1.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swagger.p1.DTO.*;
+import com.swagger.p1.Entity.Users;
 import com.swagger.p1.Service.TaskService;
+import com.swagger.p1.repository.UsersRepo;
+import com.swagger.p1.security.JWTConfig;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +34,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/Task")
 public class TaskController {
 
+	private final JWTConfig jwtConfig;
     
+	private final UsersRepo urepo;
     private final TaskService tservice;
 
     @PostMapping("/admin/taskCreate")
@@ -36,11 +45,28 @@ public class TaskController {
        
     }
 // this method is secure here i will get the authenticated user and will return task assigned to that user only
+   
     @GetMapping("/user")
-    public ResponseEntity<?> TaskAllGetUser(@RequestParam Long USerid) {
-        return tservice.UsergetAllTask(USerid);
+    public ResponseEntity<?> TaskAllGetUserDummy(HttpServletRequest req) {
+    	String authHeader=req.getHeader("Authorization");
+        if(authHeader!=null && authHeader.startsWith("Bearer ")){
+            String jwt=authHeader.substring(7);
+            String username=jwtConfig.validateToken(jwt);
+            if(username==null) {
+            	System.out.println("insinde null username");
+            	return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exists");
+            }
+          Users u= urepo.findByUserName(username).orElse(null);
+          if(u!=null){
+        		System.out.println("found user "+u.getId());
+           return tservice.UsergetAllTask(u.getId());
+          }
+         
+          
+        }
+        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        //return tservice.UsergetAllTask(USerid);
     }
-
     @PutMapping("/admin/Update/{id}")
     public ResponseEntity<?> TaskUpdate(@PathVariable Long id, @RequestBody TaskDTO t) {
          return tservice.updateTask(id,t);
