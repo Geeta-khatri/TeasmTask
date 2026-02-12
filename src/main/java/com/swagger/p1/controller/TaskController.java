@@ -13,6 +13,7 @@ import com.swagger.p1.Service.TaskService;
 import com.swagger.p1.repository.UsersRepo;
 import com.swagger.p1.security.JWTConfig;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -48,24 +49,19 @@ public class TaskController {
    
     @GetMapping("/user")
     public ResponseEntity<?> TaskAllGetUserDummy(HttpServletRequest req) {
-    	String authHeader=req.getHeader("Authorization");
-        if(authHeader!=null && authHeader.startsWith("Bearer ")){
-            String jwt=authHeader.substring(7);
-            String username=jwtConfig.validateToken(jwt);
-            if(username==null) {
-            	System.out.println("insinde null username");
-            	return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exists");
-            }
-          Users u= urepo.findByUserName(username).orElse(null);
-          if(u!=null){
-        		System.out.println("found user "+u.getId());
-           return tservice.UsergetAllTask(u.getId());
-          }
-         
-          
-        }
-        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.BAD_REQUEST);
+    	
         //return tservice.UsergetAllTask(USerid);
+     	Claims claim=jwtConfig.getClaimsDtls(req);
+    	if(claim!=null) {
+    		Users u= urepo.findByUserName(claim.getSubject()).orElse(null);
+    		if(u!=null) {
+    			return tservice.UsergetAllTask(u.getId());
+    		}
+    		else {
+    			return new ResponseEntity<>("User does not exists",HttpStatus.BAD_REQUEST);
+    		}
+    	}
+    	return new ResponseEntity<>("Invalid Login",HttpStatus.UNAUTHORIZED);
     }
     @PutMapping("/admin/Update/{id}")
     public ResponseEntity<?> TaskUpdate(@PathVariable Long id, @RequestBody TaskDTO t) {
