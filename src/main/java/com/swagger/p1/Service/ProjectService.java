@@ -144,24 +144,30 @@ public class ProjectService {
         
     }
 
-    public ResponseEntity<?> projectById(Long id){
+    public ResponseEntity<?> projectByUserId(Long id){
         try {
-           Project pExist= prepo.findById(id).orElse(null);
+           List<Project> pExist= prepo.findByProjectOwnerId(id);//ProjectOwner → the field in Project entity
+           														//Id → the field in the Users entity (ProjectOwner is a Users object)
            
            if(pExist!=null){
-            ProjectDTOResponse ProjectDtls=new ProjectDTOResponse();
-            ProjectDtls.setDescription(pExist.getDescription());
-            ProjectDtls.setName(pExist.getName());
+            List<ProjectDTOResponse> ProjectDTOResponse=new ArrayList<>();
+            for(Project projectDtls:pExist) {
+            	ProjectDTOResponse dto=new ProjectDTOResponse();
+            dto.setDescription(projectDtls.getDescription());
+            dto.setName(projectDtls.getName());
             
-            if(pExist.getProjectOwner()!=null ){//&& pExist.getProjectOwner().getId()!=null ){
-                System.out.println("id is "+pExist.getProjectOwner().getId());
-            ProjectDtls.setUserId(pExist.getProjectOwner().getId());
+            if(projectDtls.getProjectOwner()!=null ){//&& pExist.getProjectOwner().getId()!=null ){
+                System.out.println("id is "+projectDtls.getProjectOwner().getId());
+            dto.setUserId(projectDtls.getProjectOwner().getId());
             }
-            ProjectDtls.setId(pExist.getId());
+            dto.setId(projectDtls.getId());
+            ProjectDTOResponse.add(dto);
+           
+            }
 
-            return ResponseEntity.status(HttpStatus.OK).body(ProjectDtls);
+            return ResponseEntity.status(HttpStatus.OK).body(ProjectDTOResponse);
            }
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Project does not exist!");
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No project assigned to user!");
 
         } catch (Exception e) {
             e.printStackTrace();
