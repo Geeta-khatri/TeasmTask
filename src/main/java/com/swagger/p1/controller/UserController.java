@@ -3,6 +3,7 @@ package com.swagger.p1.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swagger.p1.DTO.AuthResponseDTO;
+import com.swagger.p1.DTO.TokenDTOResponse;
 import com.swagger.p1.DTO.UsersDTO;
 import com.swagger.p1.DTO.AuthRequestDTO;
 import com.swagger.p1.Service.UsersService;
@@ -55,8 +56,10 @@ public class UserController {
          System.out.println(toVerify.getUserName());
         if(toVerify.getUserName().equals(authReq.getUsername()) && passwordEncoder.matches(authReq.getPassword(), toVerify.getPassword())){//toVerify.getPassword().equals(authReq.getPassword())){
         System.out.println("user found"+toVerify);
-            String token =jwtconfig.generateToken(toVerify);
-            return ResponseEntity.ok(new AuthResponseDTO(token));
+           // String token =jwtconfig.generateToken(toVerify);
+            TokenDTOResponse token =jwtconfig.generateToken(toVerify);
+           // return ResponseEntity.ok(new AuthResponseDTO(token));
+            return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
         }
