@@ -3,6 +3,7 @@ package com.swagger.p1.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swagger.p1.DTO.AuthResponseDTO;
+import com.swagger.p1.DTO.RefreshTokenReqDTO;
 import com.swagger.p1.DTO.TokenDTOResponse;
 import com.swagger.p1.DTO.UsersDTO;
 import com.swagger.p1.DTO.AuthRequestDTO;
@@ -66,6 +67,11 @@ public class UserController {
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credintial");
         }
+    }
+    
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> UserReferehToken(@RequestBody RefreshTokenReqDTO tokenMsg){
+    	return jwtconfig.generateRefreshToken(tokenMsg);
     }
 
    
