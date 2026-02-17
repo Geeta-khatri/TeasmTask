@@ -30,6 +30,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth->auth
         .requestMatchers(HttpMethod.POST,"/UsersInfo/login").permitAll()
          .requestMatchers(HttpMethod.POST, "/UsersInfo/register").permitAll()
+         .requestMatchers(HttpMethod.POST, "/UsersInfo/refreshtoken").permitAll()
          .requestMatchers(HttpMethod.GET, "/").permitAll()
          .requestMatchers(HttpMethod.POST,"/admin/roleAssign/*").hasAuthority("ADMIN")
          .requestMatchers("/Task/admin/**").hasAuthority("ADMIN")
