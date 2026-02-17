@@ -11,12 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Data
+@AllArgsConstructor
 public class RefreshToken {
 
 	@Id
@@ -24,7 +26,7 @@ public class RefreshToken {
 	private Long id;
 	 
 	@OneToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id",referencedColumnName="id")
 	private Users users;
 	
 	@Column(unique=true)
