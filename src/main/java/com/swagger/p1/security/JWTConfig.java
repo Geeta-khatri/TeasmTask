@@ -62,7 +62,7 @@ private Key getSigningKey() {
     	TokenDTOResponse tokenResp=new TokenDTOResponse();
     	RefreshToken RefreshToken_obj=new RefreshToken();
     	RefreshToken_obj.setUsers(verified_user);
-    	RefreshToken_obj.setRefreshTokenExpiration(refreshTokenExpiration);
+    	RefreshToken_obj.setRefreshTokenExpiration(new Date(System.currentTimeMillis()+refreshTokenExpiration));
     	tokenResp.setJwtToken(Jwts.builder()
         .setSubject(verified_user.getUserName())
         .setIssuedAt(new Date())
@@ -87,6 +87,11 @@ private Key getSigningKey() {
     		System.out.println("is it empty "+token_from_db.isEmpty());
     		if(token_from_db.isEmpty()) {
     			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized token , refresh token can't be generated");
+    		}
+    		else if(token_from_db.get().getRefreshTokenExpiration().before(new Date())) {
+    			RefreshTokenRepo.deleteByTokenMsg(tokenMsg.getTokenMsg());
+    			
+    			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token no longer active");
     		}
     		else {
     			Optional<Users> User_from_tokenMsg=urepo.findById(token_from_db.get().getUsers().getId());
