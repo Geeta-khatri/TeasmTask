@@ -1,5 +1,6 @@
 package com.swagger.p1.Entity;
 
+import java.util.Date;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ public class RefreshToken {
 	private String tokenMsg;
 	
 	
-	private long RefreshTokenExpiration;
+	private Date RefreshTokenExpiration;
 	
 	
 }
