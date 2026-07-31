@@ -17,11 +17,11 @@ Admin Features
 > Add tasks to projects
 > create team projects
 
-Planned Enhancements (In Progress)
+Planned Enhancements (Done)
 
 Security Enhancements
 >Implement JWT refresh token mechanism
->Token revocation and secure logout
+>Token revocation and secure logout using redis
 
 Task Management Enhancements
 >Task lifecycle management (TODO, IN_PROGRESS, BLOCKED, DONE)
@@ -33,7 +33,7 @@ System & Backend Improvements
 >Audit logging to track create, update, and delete actions
 >Asynchronous processing for non-blocking operations
 
-Testing & Quality Assurance
+Testing & Quality Assurance(In Progress)
 >Unit testing for service-layer logic
 >Integration testing with real database using Testcontainers
 >Security and authorization tests
@@ -49,6 +49,7 @@ Deployment & DevOps
 >Hibernate / JPA
 >MySQL (Relational Database)
 >RESTful APIs
+>Redis
 >Docker & Docker Compose(planned)
 >JUnit, Mockito, Testcontainers(planned)
 
