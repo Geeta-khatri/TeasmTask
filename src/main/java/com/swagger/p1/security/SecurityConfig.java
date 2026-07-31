@@ -31,6 +31,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST,"/UsersInfo/login").permitAll()
          .requestMatchers(HttpMethod.POST, "/UsersInfo/register").permitAll()
          .requestMatchers(HttpMethod.POST, "/UsersInfo/refreshtoken").permitAll()
+         .requestMatchers(HttpMethod.POST, "/UsersInfo/logout").permitAll()
          .requestMatchers(HttpMethod.GET, "/").permitAll()
          .requestMatchers(HttpMethod.POST,"/admin/roleAssign/*").hasAuthority("ADMIN")
          .requestMatchers("/Task/admin/**").hasAuthority("ADMIN")
@@ -43,6 +44,8 @@ public class SecurityConfig {
         .addFilterBefore(jwtTokenFilter,  UsernamePasswordAuthenticationFilter.class)
         ;
 
+        
+        
         return http.build();
     }
 
@@ -51,4 +54,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     
+    
+    
+    
+    
+  
 }
