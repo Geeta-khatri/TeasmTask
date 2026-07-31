@@ -11,6 +11,7 @@ import com.swagger.p1.repository.RefreshTokenRepo;
 import com.swagger.p1.repository.UsersRepo;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -111,6 +112,19 @@ private Key getSigningKey() {
         }
     }
     
+    //method to extract claims
+    public Jws<Claims> etxractClaims(String token) {
+    	try {
+    		return Jwts.parserBuilder()
+    	            .setSigningKey(getSigningKey())
+    	            .build()
+    	            .parseClaimsJws(token);
+    	            
+        	}
+        		catch (JwtException e) {
+                    return null;
+                }
+    }
     
     public String validateToken(String token){
         try {
