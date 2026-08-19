@@ -4,13 +4,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo "Entered checkout stage "
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                 echo "Entered Build stage "
+                bat './mvnw clean package -DskipTests'
             }
         }
     }
