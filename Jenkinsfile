@@ -12,7 +12,13 @@ pipeline {
         stage('Build') {
             steps {
                  echo "Entered Build stage "
-                bat './mvnw clean package -DskipTests'
+                bat './mvnw clean package -DskipTests -Dfilename=${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}'
+            }
+        }
+
+        stage('Archive JAR') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
