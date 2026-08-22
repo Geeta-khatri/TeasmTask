@@ -12,7 +12,8 @@ pipeline {
         stage('Build') {
             steps {
                  echo "Entered Build stage "
-                bat './mvnw clean package -DskipTests -DfinalName=${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}'
+                bat "mvnw.cmd clean package -DskipTests -DfinalName=${env.JOB_BASE_NAME}_${env.BUILD_NUMBER}"
+
             }
         }
 
