@@ -24,6 +24,10 @@ pipeline {
         }
 
         stage('Docker Build') {
+            environment {
+            PATH = "C:\\Users\\deepe\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;${env.PATH}"
+            }
+
             steps {
                 echo "Building Docker image"
                 bat 'docker build -t myapp .'
