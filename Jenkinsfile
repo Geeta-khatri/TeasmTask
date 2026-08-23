@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        JWT_EXPIRATION = credentials('JWT_EXPIRATION')
+        DB_USERNAME = credentials('DB_USERNAME')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+        JWT_REF_EXPIRATION = credentials('JWT_REF_EXPIRATION')
+        JWT_SECRET = credentials('JWT_SECRET')
+        
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -23,14 +31,24 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            environment {
-            PATH = "C:\\Users\\deepe\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;${env.PATH}"
+        stage('Docker Check') {
+            steps {
+                echo " Docker version check"
+                bat 'docker --version'
             }
+        }
 
+        stage('Docker Build') {
             steps {
                 echo "Building Docker image"
                 bat 'docker build -t myapp .'
+            }
+        }
+
+        stage('Docker Deploy') {
+            steps {
+                echo "Docker compose"
+                bat 'docker compose up -d'
             }
         }
     }
