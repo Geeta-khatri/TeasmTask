@@ -7,7 +7,7 @@ pipeline {
         DB_PASSWORD = credentials('DB_PASSWORD')
         JWT_REF_EXPIRATION = credentials('JWT_REF_EXPIRATION')
         JWT_SECRET = credentials('JWT_SECRET')
-        
+        PATH= credentials('Dcoker_path')
     }
     stages {
         stage('Checkout') {
