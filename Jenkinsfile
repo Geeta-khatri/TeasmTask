@@ -32,33 +32,33 @@ pipeline {
 
         stage('Docker Check') {
              environment {
-        PATH= credentials('Dcoker_path')
+        DOCKER_PATH= credentials('Dcoker_path')
     }
             steps {
                 echo "Docker version check"
                  bat 'echo %PATH%'
                  bat 'where docker'
-                bat 'docker --version'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker --version'
             }
         }
 
         stage('Docker Build') {
             environment {
-        PATH= credentials('Dcoker_path')
+        DOCKER_PATH= credentials('Dcoker_path')
     }
             steps {
                 echo "Building Docker image"
-                bat 'docker build -t myapp .'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker build -t myapp .'
             }
         }
 
         stage('Docker Deploy') {
             environment {
-        PATH= credentials('Dcoker_path')
+        DOCKER_PATH= credentials('Dcoker_path')
     }
             steps {
                 echo "Docker compose"
-                bat 'docker compose up -d'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose up -d'
             }
         }
     }
