@@ -36,8 +36,7 @@ pipeline {
     }
             steps {
                 echo "Docker version check"
-                 bat 'echo %PATH%'
-                 bat 'where docker'
+                
                 bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker --version'
             }
         }
