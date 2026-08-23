@@ -7,7 +7,6 @@ pipeline {
         DB_PASSWORD = credentials('DB_PASSWORD')
         JWT_REF_EXPIRATION = credentials('JWT_REF_EXPIRATION')
         JWT_SECRET = credentials('JWT_SECRET')
-        PATH= credentials('Dcoker_path')
     }
     stages {
         stage('Checkout') {
@@ -32,6 +31,9 @@ pipeline {
         }
 
         stage('Docker Check') {
+             environment {
+        PATH= credentials('Dcoker_path')
+    }
             steps {
                 echo "Docker version check"
                  bat 'echo %PATH%'
@@ -41,6 +43,9 @@ pipeline {
         }
 
         stage('Docker Build') {
+            environment {
+        PATH= credentials('Dcoker_path')
+    }
             steps {
                 echo "Building Docker image"
                 bat 'docker build -t myapp .'
@@ -48,6 +53,9 @@ pipeline {
         }
 
         stage('Docker Deploy') {
+            environment {
+        PATH= credentials('Dcoker_path')
+    }
             steps {
                 echo "Docker compose"
                 bat 'docker compose up -d'
