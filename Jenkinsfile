@@ -56,7 +56,8 @@ pipeline {
         DOCKER_PATH= credentials('Dcoker_path')
     }
             steps {
-                echo "Docker compose"
+                echo "Docker compose version"
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose version'
                 bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose up --detach'
             }
         }
