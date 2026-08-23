@@ -57,8 +57,8 @@ pipeline {
     }
             steps {
                 echo "Docker compose version"
-                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose version'
-                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose up --detach'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker-compose --version'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker-compose up -d'
             }
         }
     }
