@@ -33,7 +33,9 @@ pipeline {
 
         stage('Docker Check') {
             steps {
-                echo " Docker version check"
+                echo "Docker version check"
+                 bat 'echo %PATH%'
+                 bat 'where docker'
                 bat 'docker --version'
             }
         }
