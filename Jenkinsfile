@@ -57,7 +57,7 @@ pipeline {
     }
             steps {
                 echo "Docker compose"
-                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose up -d'
+                bat 'set "PATH=%DOCKER_PATH%;%PATH%" && docker compose up --detach'
             }
         }
     }
