@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: myapp
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: myapp
+
+  template:
+    metadata:
+      labels:
+        app: myapp
+
+    spec:
+      containers:
+        - name: myapp
+          image: myapp:latest
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "example"
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secret
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secret
+                  key: DB_PASSWORD
+
+            - name: JWT_REF_EXPIRATION
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secret
+                  key: JWT_REF_EXPIRATION
+
+            - name: JWT_EXPIRATION
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secret
+                  key: JWT_EXPIRATION
+
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secret
+                  key: JWT_SECRET
